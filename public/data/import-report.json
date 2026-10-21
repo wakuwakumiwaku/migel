@@ -1,0 +1,387 @@
+{
+  "schema_version": 1,
+  "position_count": 786,
+  "note_count": 250,
+  "chapter_count": 24,
+  "blank_rows": [
+    1038
+  ],
+  "classifications_total": 1037,
+  "sheets": {
+    "MiGeL D": {
+      "source_rows": 1037,
+      "position_count": 786,
+      "unique_literal_codes": 786
+    },
+    "MiGeL F": {
+      "source_rows": 1036,
+      "position_count": 786,
+      "unique_literal_codes": 786
+    },
+    "MiGeL I": {
+      "source_rows": 1036,
+      "position_count": 786,
+      "unique_literal_codes": 786
+    }
+  },
+  "selected_sheet": "MiGeL D",
+  "excluded_languages": [
+    "MiGeL F",
+    "MiGeL I"
+  ],
+  "hierarchy_without_heading": [
+    "17.06.01",
+    "26.01",
+    "35.06.08.",
+    "99.02.01"
+  ],
+  "prefix_heading_links": [
+    {
+      "position_id": "D904",
+      "note_id": "D902",
+      "method": "exact literal position prefix"
+    }
+  ],
+  "amount_types": {
+    "self": {
+      "numeric": 737,
+      "missing": 49
+    },
+    "care": {
+      "numeric": 708,
+      "text": 39,
+      "missing": 39
+    }
+  },
+  "literal_code_whitespace": [
+    {
+      "id": "D120",
+      "code": "05.02.20.00.1 "
+    },
+    {
+      "id": "D134",
+      "code": "05.07.13.00.1 "
+    },
+    {
+      "id": "D135",
+      "code": "05.07.14.00.1 "
+    },
+    {
+      "id": "D147",
+      "code": "05.10.01.00.1 "
+    },
+    {
+      "id": "D148",
+      "code": "05.10.02.00.1 "
+    },
+    {
+      "id": "D149",
+      "code": "05.10.03.00.1 "
+    },
+    {
+      "id": "D368",
+      "code": "17.02.01.02.1 "
+    },
+    {
+      "id": "D369",
+      "code": "17.02.01.03.1 "
+    },
+    {
+      "id": "D371",
+      "code": "17.02.01.05.1 "
+    },
+    {
+      "id": "D372",
+      "code": "17.02.01.06.1 "
+    },
+    {
+      "id": "D373",
+      "code": "17.02.01.07.1 "
+    },
+    {
+      "id": "D374",
+      "code": "17.02.01.08.1 "
+    },
+    {
+      "id": "D375",
+      "code": "17.02.01.09.1 "
+    },
+    {
+      "id": "D376",
+      "code": "17.02.01.10.1 "
+    },
+    {
+      "id": "D377",
+      "code": "17.02.01.11.1 "
+    },
+    {
+      "id": "D378",
+      "code": "17.02.01.12.1 "
+    },
+    {
+      "id": "D380",
+      "code": "17.03.01.01.1 "
+    },
+    {
+      "id": "D381",
+      "code": "17.03.01.02.1 "
+    },
+    {
+      "id": "D382",
+      "code": "17.03.01.03.1 "
+    },
+    {
+      "id": "D383",
+      "code": "17.03.01.04.1 "
+    }
+  ],
+  "text_amounts": [
+    {
+      "id": "D29",
+      "code": "03.06.01.00.1",
+      "context": "care",
+      "raw": "Kategorie A"
+    },
+    {
+      "id": "D31",
+      "code": "03.06.01.01.1",
+      "context": "care",
+      "raw": "Kategorie A"
+    },
+    {
+      "id": "D32",
+      "code": "03.06.01.02.1",
+      "context": "care",
+      "raw": "Kategorie A"
+    },
+    {
+      "id": "D34",
+      "code": "03.06.01.03.1",
+      "context": "care",
+      "raw": "Kategorie A"
+    },
+    {
+      "id": "D35",
+      "code": "03.06.01.06.1",
+      "context": "care",
+      "raw": "Kategorie A"
+    },
+    {
+      "id": "D76",
+      "code": "03.07.08.05.1",
+      "context": "care",
+      "raw": "Kategorie A"
+    },
+    {
+      "id": "D90",
+      "code": "03.07.09.15.1",
+      "context": "care",
+      "raw": "Kategorie A"
+    },
+    {
+      "id": "D91",
+      "code": "03.07.09.16.1",
+      "context": "care",
+      "raw": "Kategorie A"
+    },
+    {
+      "id": "D178",
+      "code": "09.02.01.00.1",
+      "context": "care",
+      "raw": "Kategorie A"
+    },
+    {
+      "id": "D179",
+      "code": "09.02.01.01.1",
+      "context": "care",
+      "raw": "Kategorie A"
+    },
+    {
+      "id": "D181",
+      "code": "09.02.01.03.1",
+      "context": "care",
+      "raw": "Kategorie A"
+    },
+    {
+      "id": "D182",
+      "code": "09.02.01.04.1",
+      "context": "care",
+      "raw": "Kategorie A"
+    },
+    {
+      "id": "D189",
+      "code": "09.03.01.00.2",
+      "context": "care",
+      "raw": "124.46\n"
+    },
+    {
+      "id": "D193",
+      "code": "09.04.01.00.2",
+      "context": "care",
+      "raw": "14373.18\n"
+    },
+    {
+      "id": "D453",
+      "code": "21.01.04.00.1",
+      "context": "care",
+      "raw": "Kategorie A"
+    },
+    {
+      "id": "D463",
+      "code": "21.02.01.00.1",
+      "context": "care",
+      "raw": "Kategorie A"
+    },
+    {
+      "id": "D467",
+      "code": "21.02.20.00.1",
+      "context": "care",
+      "raw": "Kategorie A"
+    },
+    {
+      "id": "D469",
+      "code": "21.03.01.01.1",
+      "context": "care",
+      "raw": "Kategorie A"
+    },
+    {
+      "id": "D471",
+      "code": "21.03.05.00.1",
+      "context": "care",
+      "raw": "Kategorie A"
+    },
+    {
+      "id": "D473",
+      "code": "21.03.10.10.1",
+      "context": "care",
+      "raw": "Kategorie A"
+    },
+    {
+      "id": "D644",
+      "code": "35.01.01.20.1",
+      "context": "care",
+      "raw": "Kategorie A"
+    },
+    {
+      "id": "D645",
+      "code": "35.01.01.21.1",
+      "context": "care",
+      "raw": "Kategorie A"
+    },
+    {
+      "id": "D646",
+      "code": "35.01.01.22.1",
+      "context": "care",
+      "raw": "Kategorie A"
+    },
+    {
+      "id": "D647",
+      "code": "35.01.01.23.1",
+      "context": "care",
+      "raw": "Kategorie A"
+    },
+    {
+      "id": "D692",
+      "code": "35.01.07.20.1",
+      "context": "care",
+      "raw": "Kategorie A"
+    },
+    {
+      "id": "D693",
+      "code": "35.01.07.21.1",
+      "context": "care",
+      "raw": "Kategorie A"
+    },
+    {
+      "id": "D694",
+      "code": "35.01.07.22.1",
+      "context": "care",
+      "raw": "Kategorie A"
+    },
+    {
+      "id": "D695",
+      "code": "35.01.07.23.1",
+      "context": "care",
+      "raw": "Kategorie A"
+    },
+    {
+      "id": "D696",
+      "code": "35.01.07.24.1",
+      "context": "care",
+      "raw": "Kategorie A"
+    },
+    {
+      "id": "D697",
+      "code": "35.01.07.25.1",
+      "context": "care",
+      "raw": "Kategorie A"
+    },
+    {
+      "id": "D709",
+      "code": "35.01.08.20.1",
+      "context": "care",
+      "raw": "Kategorie A"
+    },
+    {
+      "id": "D710",
+      "code": "35.01.08.21.1",
+      "context": "care",
+      "raw": "Kategorie A"
+    },
+    {
+      "id": "D711",
+      "code": "35.01.08.22.1",
+      "context": "care",
+      "raw": "Kategorie A"
+    },
+    {
+      "id": "D712",
+      "code": "35.01.08.23.1",
+      "context": "care",
+      "raw": "Kategorie A"
+    },
+    {
+      "id": "D713",
+      "code": "35.01.08.24.1",
+      "context": "care",
+      "raw": "Kategorie A"
+    },
+    {
+      "id": "D714",
+      "code": "35.01.08.25.1",
+      "context": "care",
+      "raw": "Kategorie A"
+    },
+    {
+      "id": "D715",
+      "code": "35.01.08.26.1",
+      "context": "care",
+      "raw": "Kategorie A"
+    },
+    {
+      "id": "D716",
+      "code": "35.01.08.27.1",
+      "context": "care",
+      "raw": "Kategorie A"
+    },
+    {
+      "id": "D1014",
+      "code": "99.20.01.01.1",
+      "context": "care",
+      "raw": "Kategorie A"
+    }
+  ],
+  "system_counts": {
+    "Kauf": 731,
+    "Miete": 43,
+    "Kauf und Miete": 12
+  },
+  "rules": [
+    "Canonical code is column H, never cached sorting formula Q.",
+    "Source code whitespace is preserved; id is source sheet row.",
+    "Numeric cells use official two-decimal Excel number format 43; raw XML value retained.",
+    "Text-looking numbers stay text/unresolved; missing cells are never zero.",
+    "System labels follow official PDF section 4.2 (last digit), not product names.",
+    "No eligibility, period, frequency, cumulation or pro-rata validation."
+  ]
+}

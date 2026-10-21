@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "authority": "Bundesamt für Gesundheit BAG",
+  "source_page": "https://www.bag.admin.ch/de/mittel-und-gegenstaendeliste-migel",
+  "effective_date": "2026-07-01",
+  "publication_date": "2026-06-24",
+  "files": [
+    {
+      "file": "source-migel.xlsx",
+      "url": "https://www.bag.admin.ch/dam/de/sd-web/4GEgEMgJ45A6/Mittel-%20und%20Gegenst%C3%A4ndeliste%20per%201.%20Juli%202026%20(in%20Excel-Format).xlsx",
+      "final_url": "https://www.bag.admin.ch/dam/de/sd-web/4GEgEMgJ45A6/Mittel-%20und%20Gegenst%C3%A4ndeliste%20per%201.%20Juli%202026%20(in%20Excel-Format).xlsx",
+      "bytes": 532339,
+      "sha256": "6335483a46fc558cba2591896d38bc97911b40a8f4eef46729dedf0b101b1df2",
+      "content_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "captured_at": "2026-10-21T16:37:38.651214+00:00"
+    },
+    {
+      "file": "source-migel.pdf",
+      "url": "https://www.bag.admin.ch/dam/de/sd-web/tmtz2K0-RTAB/Mittel-%20und%20Gegenst%C3%A4ndeliste%20per%2001.07.2026.pdf",
+      "final_url": "https://www.bag.admin.ch/dam/de/sd-web/tmtz2K0-RTAB/Mittel-%20und%20Gegenst%C3%A4ndeliste%20per%2001.07.2026.pdf",
+      "bytes": 5601572,
+      "sha256": "3e2a5975b5b118d12ebb3b29b01f901baf7fca75b13257b9bd694007bcb1a6b2",
+      "content_type": "application/pdf",
+      "captured_at": "2026-10-21T16:37:39.887242+00:00"
+    }
+  ]
+}
