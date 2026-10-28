@@ -14,11 +14,11 @@ function readStorage(){
   try{storedRaw=localStorage.getItem(STORAGE_KEY);return storedRaw===null?emptyWorkspace(catalog):validateWorkspace(JSON.parse(storedRaw),catalog);}
   catch{storageWarning('Lokaler Speicher ist blockiert oder enthält eine beschädigte bzw. unpassende Sicherung. Vorhandene Daten werden nicht überschrieben. Diese Sitzung arbeitet nur im Arbeitsspeicher.');return emptyWorkspace(catalog);}
 }
-function persist(){
+function persist(next=workspace){
  if(!storageOK)return false;
  try{
   if(localStorage.getItem(STORAGE_KEY)!==storedRaw){storageWarning('Der MiGeL-Speicher wurde anderswo geändert. Speichern pausiert; aktuelle Arbeit als JSON sichern und neu laden.');return false;}
-  const raw=JSON.stringify(workspace);localStorage.setItem(STORAGE_KEY,raw);storedRaw=raw;return true;
+  const raw=JSON.stringify(next);localStorage.setItem(STORAGE_KEY,raw);storedRaw=raw;return true;
  }catch{storageWarning('Speichern nicht möglich. Diese Sitzung bleibt nutzbar, ist aber nicht dauerhaft gespeichert. Bitte JSON sichern.');return false;}
 }
 function invalidDraft(){for(const text of drafts.values()){try{quantity(text);}catch{return true;}}return false;}
@@ -164,7 +164,7 @@ async function boot(){
    try{if(file.size>2000000)throw Error('Datei grösser als 2 MB.');const text=await file.text();if(revision!==importRevision)return;const candidate=validateWorkspace(JSON.parse(text),catalog);pendingImport=candidate;$('import-summary').textContent=`Vollständig geprüft: ${candidate.lines.length} Zeilen und ${candidate.favorites.length} Favoriten · ${catalog.edition}.`;$('import-preview').showModal();}
    catch(e){if(revision===importRevision)tell('Import abgelehnt. Bestehende Zusammenstellung unverändert. '+e.message);}
   });
-  $('apply-import').addEventListener('click',()=>{if(!pendingImport)return;workspace=validateWorkspace(pendingImport,catalog);pendingImport=null;drafts.clear();persist();renderAll();$('import-preview').close();tell('Geprüfte Sicherung übernommen.');});
+  $('apply-import').addEventListener('click',()=>{if(!pendingImport)return;const candidate=validateWorkspace(pendingImport,catalog);if(!persist(candidate)){const message='Import nicht übernommen. Aktuelle Zusammenstellung und Mengenentwürfe bleiben erhalten. JSON sichern und Speicherwarnung beachten.';$('import-summary').textContent=message;tell(message);return;}workspace=candidate;pendingImport=null;drafts.clear();renderAll();$('import-preview').close();tell('Geprüfte Sicherung übernommen.');});
   $('import-preview').addEventListener('close',()=>{pendingImport=null;});
   $('reset-storage').addEventListener('click',()=>{if(confirm('Nur den lokalen MiGeL-Speicher zurücksetzen und durch diese aktuelle Sitzung ersetzen? Andere Anwendungen bleiben unverändert.')){try{const raw=JSON.stringify(workspace);localStorage.setItem(STORAGE_KEY,raw);storedRaw=raw;storageOK=true;$('storage-warning').hidden=true;$('storage-state').textContent='Nur in diesem Browser gespeichert. Keine Patientendaten eingeben. JSON regelmässig sichern.';tell('Lokaler MiGeL-Speicher wieder nutzbar.');}catch{storageWarning('Lokaler Speicher weiterhin blockiert. Bitte JSON sichern.');}}});
   window.addEventListener('storage',event=>{

@@ -139,6 +139,54 @@ try{
  await drift.locator('.plan-line[data-key="D4|self"] input').fill('2');
  check('Unnotified raw-storage drift is checked before writing; foreign bytes and own in-memory edit both survive',await drift.evaluate(k=>localStorage.getItem(k),STORAGE_KEY)===driftRaw&&await drift.locator('#storage-warning').isVisible()&&await drift.locator('.plan-line input').inputValue()==='2');await driftContext.close();
  const blockedContext=await browser.newContext();await blockedContext.addInitScript(()=>{Object.defineProperty(window,'localStorage',{get(){throw new DOMException('Blocked','SecurityError');}});});const blocked=await blockedContext.newPage();observe(blocked);await blocked.goto(url);await blocked.waitForFunction(()=>!document.getElementById('search').disabled);await blocked.locator('[data-id="D4"] .add').click();check('Blocked storage still supports in-memory calculations',await blocked.locator('#total').textContent()==='CHF 47.17'&&await blocked.locator('#storage-warning').isVisible());await blockedContext.close();
+ report.importRefusals=[];
+ for(const mode of ['protected','drift','read-denied','write-denied','healthy']){
+  const isolated=await browser.newContext(),p=await isolated.newPage();observe(p);
+  await p.goto(url);await p.waitForFunction(()=>!document.getElementById('search').disabled);
+  const current={...JSON.parse(json),lines:[{id:'D4',context:'self',quantity:'2'}],favorites:['D4']};
+  const incoming={...current,lines:[{id:'D7',context:'care',quantity:'3'}],favorites:['D7']};
+  await p.evaluate(({key,current})=>{localStorage.setItem(key,JSON.stringify(current));localStorage.setItem('physiotherapie.workspace.v1','synthetic foreign namespace Ω');},{key:STORAGE_KEY,current});
+  await p.reload();await p.waitForFunction(()=>!document.getElementById('search').disabled);
+  await p.locator('.plan-line input').fill('');
+  const expectedView=await p.locator('.plan-line').evaluateAll(es=>es.map(e=>({key:e.dataset.key,quantity:e.querySelector('input').value})));
+  await p.locator('#import-file').setInputFiles({name:'synthetic-replacement.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(incoming))});
+  await p.locator('#import-preview[open]').waitFor();
+  let expectedRaw=JSON.stringify(current);
+  if(mode==='protected'||mode==='drift'){
+   const foreign={...current,lines:[{id:'D4',context:'self',quantity:'8'}]};expectedRaw=JSON.stringify(foreign);
+   const writer=mode==='protected'?await isolated.newPage():p;
+   if(writer!==p){observe(writer);await writer.goto(url);await writer.waitForFunction(()=>!document.getElementById('search').disabled);}
+   await writer.evaluate(({key,raw})=>localStorage.setItem(key,raw),{key:STORAGE_KEY,raw:expectedRaw});
+   if(writer!==p){await p.locator('#storage-warning').waitFor({state:'visible'});await writer.close();
+    // A real foreign event dismisses stale previews; a fresh explicit preview must still refuse to erase current work.
+    await p.locator('#import-file').setInputFiles({name:'synthetic-after-protection.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(incoming))});await p.locator('#import-preview[open]').waitFor();}
+  }
+  await p.evaluate(({key,mode})=>{
+   const get=Storage.prototype.getItem,set=Storage.prototype.setItem;window.__readImportRaw=()=>get.call(localStorage,key);window.__importBoundaryCalls=0;
+   Storage.prototype.getItem=function(k){if(this===localStorage&&k===key&&mode==='read-denied'){window.__importBoundaryCalls++;throw new DOMException('Synthetic read refusal','SecurityError');}return get.call(this,k);};
+   Storage.prototype.setItem=function(k,v){if(this===localStorage&&k===key&&mode==='write-denied'){window.__importBoundaryCalls++;throw new DOMException('Synthetic write refusal','QuotaExceededError');}return set.call(this,k,v);};
+  },{key:STORAGE_KEY,mode});
+  await p.locator('#apply-import').click();
+  const observed=await p.evaluate(()=>({raw:window.__readImportRaw(),boundaryCalls:window.__importBoundaryCalls,view:[...document.querySelectorAll('.plan-line')].map(e=>({key:e.dataset.key,quantity:e.querySelector('input').value})),total:document.getElementById('total').textContent,exportDisabled:document.getElementById('export-json').disabled,status:document.getElementById('status').textContent,preview:document.getElementById('import-preview').open,favorite:document.querySelector('[data-id="D4"] .favorite').getAttribute('aria-pressed'),foreign:localStorage.getItem('physiotherapie.workspace.v1')}));
+  observed.importSummary=await p.locator('#import-summary').textContent();observed.importMessageVisible=await p.locator('#import-summary').isVisible();
+  report.importRefusals.push({mode,expectedView,expectedRaw,incoming,observed});
+  if(observed.preview)await p.locator('#import-preview .close').click();
+  if(mode==='healthy'){await p.reload();await p.waitForFunction(()=>!document.getElementById('search').disabled);assert.equal(await p.locator('.plan-line input').inputValue(),'3');}
+  await isolated.close();
+ }
+ for(const {mode,expectedView,expectedRaw,incoming,observed}of report.importRefusals){
+  if(mode==='healthy'){
+   assert.deepEqual(JSON.parse(observed.raw),incoming);assert.deepEqual(observed.view,[{key:'D7|care',quantity:'3'}]);assert.equal(observed.preview,false);check('Healthy explicit import still replaces and persists the candidate');continue;
+  }
+  assert.deepEqual(observed.view,expectedView,mode+': refused import must preserve the current plan and unfinished quantity draft');
+  assert.equal(observed.raw,expectedRaw,mode+': protected raw bytes must survive');
+  assert.equal(observed.total,'—');assert.equal(observed.exportDisabled,true);assert.equal(observed.favorite,'true');
+  assert.equal(observed.preview,true,mode+': refusal leaves the candidate cancelable');assert.ok(observed.status.startsWith('Import nicht übernommen.'),mode+': do not announce import success');
+  assert.equal(observed.importSummary,observed.status,mode+': show the refusal inside the active modal, not only behind it');assert.equal(observed.importMessageVisible,true);
+  assert.equal(observed.foreign,'synthetic foreign namespace Ω');
+  if(mode.endsWith('denied'))assert.ok(observed.boundaryCalls>0,mode+': injected native boundary actually reached');
+  check('Failed import preserves current plan, draft, favorites and raw storage: '+mode);
+ }
  check('No page/console errors',report.errors.length===0);check('No failed requests',report.request_failures.length===0);report.success=true;
 }catch(error){report.success=false;report.failure=error.stack;throw error;}
 finally{await writeFile(path.join(evidence,'report.json'),JSON.stringify(report,null,2)+'\n');if(browser)await browser.close();await new Promise(r=>server.close(r));console.log(JSON.stringify(report,null,2));}
