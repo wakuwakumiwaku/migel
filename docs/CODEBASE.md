@@ -16,6 +16,7 @@
 | `scripts/build.mjs` | Sauberes `dist/`, nur Allowlist kopieren, Symlinks nicht als Eingabedatei akzeptieren |
 | `scripts/serve.mjs` | Sicherer Loopback-Server mit `createAppServer({root, basePath})`, ausschliesslich GET/HEAD und erlaubte Pfade |
 | `scripts/check.mjs` | Syntax, vollständige Quellfingerabdrücke, feste Editionszählung |
+| `tests/build.test.mjs` | Echte Build-CLI: vollständiges Output bei Inputfehlern bewahren, gestufter Verzeichnisersatz und Wiederherstellung |
 | `tests/*.test.mjs` | Node-Tests für Domäne, HTTP-Sicherheit, Unterpfade, Build-Mitgliedschaft und Bytes |
 | `tests/test_import_catalog.py` | Vollständiger Reimport-/Quellabgleich, Betragsarten, Code- und Hinweiserhalt |
 | `tests/browser.mjs` | Isolierte native Browser-Abnahme; nur `.local/` als Evidenzziel |
@@ -102,6 +103,8 @@ npm run build
 python3 scripts/import_catalog.py --check
 ```
 
-Der letzte Befehl benötigt Poppler; CI prüft die XLSX-Reproduktion ohne externe Downloads mit den regulären Python-Tests. Browser-Test separat mit `PLAYWRIGHT_MODULE` und `BROWSER_EXECUTABLE`, siehe README. Unterpfadbetrieb wird unter `/migel/` geprüft. Veröffentlichungsdateien werden exakt gegen die Allowlist und die Quellbytes verglichen; `.local/`, `sources/`, Tests, Skripte und Sicherungen gehören niemals ins Pages-Artefakt. Die Workflow-Berechtigungen sind auf `contents: read`, im Build `pages: read` und im Deployment `pages: write` / `id-token: write` begrenzt.
+Der letzte Befehl benötigt Poppler; CI prüft die XLSX-Reproduktion ohne externe Downloads mit den regulären Python-Tests. Browser-Test separat mit `PLAYWRIGHT_MODULE` und `BROWSER_EXECUTABLE`, siehe README. Unterpfadbetrieb wird unter `/migel/` geprüft. Der Build liest und prüft sämtliche erlaubten Inputs, bevor er `dist/` verändert. Die vollständige neue Ausgabe entsteht in einem temporären Projektordner; erst danach ersetzt sie den alten Verzeichnisbaum. Fehlt eine Eingabe oder ist sie ein abgelehnter Symlink, bleibt die letzte vollständige Ausgabe unverändert. Scheitert der Ersatz, wird sie wiederhergestellt; scheitert auch dies, bleibt die Sicherung im gemeldeten temporären Ordner zur manuellen Wiederherstellung erhalten. Nichtreguläre oder symlinkbasierte `dist`-Ziele werden nicht entfernt. Dies schützt vor gewöhnlichen Buildfehlern, nicht vor Stromausfall oder gleichzeitigen Builds.
+
+Veröffentlichungsdateien werden exakt gegen die Allowlist und die Quellbytes verglichen; `.local/`, `sources/`, Tests, Skripte und Sicherungen gehören niemals ins Pages-Artefakt. Die Workflow-Berechtigungen sind auf `contents: read`, im Build `pages: read` und im Deployment `pages: write` / `id-token: write` begrenzt.
 
 Für Änderungen an Quellschema, Betragslogik, Import, Speicher oder CSS müssen die jeweils betroffenen Tests und anschliessend die integrierten Prüfungen erneut laufen. Responsive Prüfungen müssen auch die **interne** Scrollbreite des Plan-Panels messen, nicht nur die Dokumentbreite. Keine stillen Datenkorrekturen: Quellauffälligkeiten im Importbericht und in `docs/DATA.md` dokumentieren.
